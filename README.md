@@ -10,9 +10,10 @@ You are not allowed to collaborate during the sprint challenge.
 
 ## Project Setup
 
-- [ ] Run `npm install` to install your dependencies.
-- [ ] Build your database executing `npm run migrate`.
-- [ ] Run tests locally executing `npm test`.
+- [x] Run `npm install` to install your dependencies.
+- [x] Build your database executing `npm run migrate`.
+- [x] Run tests locally executing `npm test`.
+- [x] Build and run Seed File containing `users` and `password`
 
 ## Project Instructions
 
