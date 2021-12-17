@@ -1,5 +1,5 @@
 require("dotenv").config()
-const { PORT } = require("./config")
+const { PORT } = require("./secrets")
 const server = require('./api/server.js');
 
 server.listen(PORT, () => {

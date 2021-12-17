@@ -1,6 +1,16 @@
 const router = require("express").Router();
+const bcrypt = require("bcryptjs");
+const { BCRYPT_ROUNDS } = require("../../secrets/index.js");
 const User = require("../users/users-model.js");
-router.post("/register", (req, res) => {
+router.post("/register", (req, res, next) => {
+  const { username, password } = req.body
+  const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS);
+  
+    User.create({username, password: hash})
+    .then((newUser) => {
+      res.status(201).json({ message: `Great to have you, ${newUser.username}` });
+    })
+    .catch(next);
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.

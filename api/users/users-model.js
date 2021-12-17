@@ -9,7 +9,7 @@ const getBy = (filter) => {
 }
 
 const getUserById = (id) => {
-    return database("users as u").where("u.id", id).first()
+    return database("users").where("id", id).first()
 }
 
 const create = async (user) => {
