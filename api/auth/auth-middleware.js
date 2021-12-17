@@ -22,6 +22,14 @@ const checkUsernameFree = async (req, res, next) => {
   }
 };
 
+const checkUserAndPass = async (req, res, next) => {
+  if (!req.body.username || !req.body.password) {
+    next({ message: "username and password required" });
+  } else {
+    next();
+  }
+};
+
 const checkPasswordLength = (req, res, next) => {
   if (!req.body.password || req.body.password.length > 3) {
     next();
@@ -33,5 +41,6 @@ const checkPasswordLength = (req, res, next) => {
 module.exports = {
   checkUsernameExists,
   checkUsernameFree,
-  checkPasswordLength
+  checkUserAndPass,
+  checkPasswordLength,
 };

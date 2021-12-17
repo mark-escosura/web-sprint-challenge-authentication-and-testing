@@ -2,27 +2,38 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const {
+checkUsernameExists,
+  checkUsernameFree,
+  checkPasswordLength,
+  checkUserAndPass,
+} = require("./auth-middleware.js");
+
 const User = require("../users/users-model.js");
 const { BCRYPT_ROUNDS, JWT_SECRET } = require("../../secrets");
-const { checkUsernameExists, checkUsernameFree, checkPasswordLength } = require("./auth-middleware.js");
 
-router.post("/register", checkUsernameFree, checkPasswordLength, (req, res, next) => {
-  const { username, password } = req.body;
-  const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS);
+// ROUTERS
 
-  User.create({ username, password: hash })
-    .then((newUser) => {
-      res
-        .status(201)
-        .json({
+router.post(
+  "/register",
+  checkUsernameFree,
+  checkPasswordLength,
+  checkUserAndPass,
+  (req, res, next) => {
+    const { username, password } = req.body;
+    const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS);
+
+    User.create({ username, password: hash })
+      .then((newUser) => {
+        res.status(201).json({
           message: `Great to have you, ${newUser.username} , Here's your username and password!`,
           id: newUser.id,
           username,
           password: hash,
         });
-    })
-    .catch(next);
-  /*
+      })
+      .catch(next);
+    /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
     DO NOT EXCEED 2^8 ROUNDS OF HASHING!
@@ -47,7 +58,8 @@ router.post("/register", checkUsernameFree, checkPasswordLength, (req, res, next
     4- On FAILED registration due to the `username` being taken,
       the response body should include a string exactly as follows: "username taken".
   */
-});
+  }
+);
 
 router.post("/login", checkUsernameExists, (req, res, next) => {
   if (bcrypt.compareSync(req.body.password, req.user.password)) {
