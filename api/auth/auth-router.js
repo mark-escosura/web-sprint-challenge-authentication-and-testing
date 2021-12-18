@@ -61,7 +61,7 @@ router.post(
   }
 );
 
-router.post("/login", checkUsernameExists, (req, res, next) => {
+router.post("/login", checkUsernameExists, checkUserAndPass, (req, res, next) => {
   if (bcrypt.compareSync(req.body.password, req.user.password)) {
     const token = buildToken(req.user);
     res.json({
@@ -69,7 +69,7 @@ router.post("/login", checkUsernameExists, (req, res, next) => {
       token,
     });
   } else {
-    next({ status: 401, message: "Invalid credentials" });
+    next({ status: 401, message: "invalid credentials" });
   }
 
   function buildToken(user) {
